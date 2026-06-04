@@ -23,6 +23,16 @@ app.use(express.json());
 // Frontend (Public) klasörünü sunucuya tanıtıyoruz
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Railway Healthcheck (Sunucu ayakta mı kontrolü)
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK' });
+});
+
+// Root endpoint: doğrudan dashboard'a yönlendir
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
+
 // --- YAPAY ZEKA API UÇ NOKTASI ---
 app.post('/api/ai-program', async (req, res) => {
     try {
