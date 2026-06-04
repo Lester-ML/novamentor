@@ -93,6 +93,11 @@ app.get('*', (req, res) => {
 });
 
 // Sunucuyu Başlat (0.0.0.0 host binding eklendi - Railway için kritik)
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 NovaMentor Backend çalışıyor! Port: ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' || process.env.RAILWAY_ENVIRONMENT) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`🚀 NovaMentor Backend çalışıyor! Port: ${PORT}`);
+    });
+}
+
+// Vercel Serverless desteği için uygulamayı dışa aktar
+module.exports = app;
