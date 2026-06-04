@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html class="light" lang="tr" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrowNova - Programlarım</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Manrope:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#1c1c1e",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#ebebeb",
+                        "secondary-fixed": "#e8e8e8",
+                        "primary-fixed": "#e8e8e8",
+                        "on-tertiary-fixed-variant": "#444444",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#111111",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#555555",
+                        "surface-variant": "#e0e0e0",
+                        "primary-fixed-dim": "#aaaaaa",
+                        "on-tertiary-container": "#555555",
+                        "tertiary-fixed": "#e0e0e0",
+                        "on-surface-variant": "#555555",
+                        "error": "#c00000",
+                        "primary": "#1c1c1e",
+                        "on-primary-container": "#555555",
+                        "surface-container-low": "#f2f2f2",
+                        "surface-container-high": "#e5e5e5",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#ffffff",
+                        "on-secondary-fixed-variant": "#333333",
+                        "secondary": "#1c1c1e",
+                        "tertiary-container": "#f5f5f5",
+                        "surface": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f5f5f5",
+                        "on-primary-fixed-variant": "#444444",
+                        "primary-container": "#f4f4f4",
+                        "error-container": "#fde8e8",
+                        "surface-container-highest": "#dcdcdc",
+                        "on-error-container": "#8b0000",
+                        "tertiary-fixed-dim": "#cccccc",
+                        "outline": "#999999",
+                        "on-surface": "#111111",
+                        "surface-dim": "#d4d4d4",
+                        "outline-variant": "#dddddd",
+                        "inverse-primary": "#aaaaaa",
+                        "secondary-fixed-dim": "#aaaaaa",
+                        "secondary-container": "#e8e8e8",
+                        "on-tertiary-fixed": "#111111",
+                        "on-secondary-container": "#333333",
+                        "surface-tint": "#1c1c1e",
+                        "background": "#f4f4f4",
+                        "on-secondary-fixed": "#111111",
+                        "on-primary-fixed": "#111111"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit-base": "8px",
+                        "margin-mobile": "16px",
+                        "sidebar-width": "260px",
+                        "gutter": "24px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk", "sans-serif"],
+                        "headline-lg": ["Manrope", "sans-serif"],
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "logo": ["Manrope", "sans-serif"],
+                        "body-lg": ["Hanken Grotesk", "sans-serif"],
+                        "label-sm": ["Hanken Grotesk", "sans-serif"],
+                        "headline-lg-mobile": ["Manrope", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "logo": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .shadow-level-1 {
+            box-shadow: 0 4px 20px rgba(84, 95, 114, 0.04);
+        }
+        
+        .shadow-hover {
+            box-shadow: 0 8px 30px rgba(84, 95, 114, 0.08);
+            border: 1px solid rgba(221, 227, 235, 0.5); /* #dde3eb */
+        }
+        
+        /* Smooth transitions */
+        .transition-soft {
+            transition: all 200ms ease-in-out;
+    /* --- Blueprint Dotted Background --- */
+    .bg-dots {
+      background-image: radial-gradient(rgba(148, 163, 184, 0.35) 2px, transparent 2px);
+      background-size: 24px 24px;
+    }
+</style>
+</head>
+<body class="bg-white bg-dots text-on-surface font-body-md antialiased min-h-screen flex overflow-x-hidden">
+<!-- Mobile Navigation Overlay (Hidden on desktop) -->
+<div class="fixed inset-0 bg-on-surface/20 z-40 hidden md:hidden transition-soft opacity-0 pointer-events-none" id="mobile-nav-overlay"></div>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-[#F8FAFC] shadow-[4px_0_20px_rgba(0,0,0,0.03)] border-r border-[#E2E8F0] z-50 transform -translate-x-full md:translate-x-0 transition-soft flex flex-col py-8" id="sidebar">
+<!-- Logo & Header -->
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-9 h-9 bg-[#475569] rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+  <span class="material-symbols-outlined text-white text-[20px]">trending_up</span>
+</div>
+<div>
+<h1 class="font-logo text-logo text-[#1E293B] leading-tight">GrowNova</h1>
+<p class="font-label-sm text-label-sm text-[#64748B]">Planla. Uygula. Başar.</p>
+</div>
+</div>
+
+<!-- Main Navigation -->
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9] transition-colors duration-200 rounded-lg" href="dashboard.html">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9] transition-colors duration-200 rounded-lg" href="mentors.html">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md text-body-md">Mentörler</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-4 py-3 border-l-4 border-[#475569] bg-[#F1F5F9] text-[#475569] font-semibold rounded-xl transition-all duration-200" href="programs.html" aria-current="page">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span class="font-body-md text-body-md">Programlarım</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9] transition-colors duration-200 rounded-lg" href="settings.html">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Ayarlar</span>
+</a>
+</nav>
+
+<!-- Footer Navigation -->
+<div class="px-4 border-t border-[#E2E8F0] pt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-[#64748B] hover:text-red-500 hover:bg-red-50 transition-colors duration-200 rounded-lg mt-1" href="login.html">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md text-body-md">Çıkış Yap</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="flex-1 w-full md:pl-[260px] flex flex-col min-h-screen">
+<!-- TopAppBar --><header class="flex justify-between items-center w-full px-4 md:px-8 py-4 md:py-5 bg-primary-container/80 backdrop-blur-sm z-30 sticky top-0 border-b border-surface-variant/50">
+
+  <div class="flex items-center gap-3">
+    <!-- Hamburger (mobile only) -->
+    <button id="open-mobile-nav" class="md:hidden text-on-surface p-2 rounded-xl hover:bg-surface-container-low transition-colors" aria-label="Menüyü aç">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+    <!-- Logo (desktop) -->
+    <div class="font-logo text-logo text-on-surface tracking-tight font-extrabold hidden md:block">Nova</div>
+    <!-- Logo (mobile) -->
+    <div class="font-logo text-[20px] leading-7 text-on-surface font-extrabold md:hidden">Nova</div>
+  </div>
+
+  <div class="flex items-center gap-2 md:gap-3">
+    <!-- Notifications -->
+    <button class="relative text-on-surface-variant p-2 rounded-full hover:bg-surface-container-low transition-colors" aria-label="Bildirimler">
+      <span class="material-symbols-outlined">notifications</span>
+      <span class="pulse-dot absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+    </button>
+  </div>
+</header>
+<!-- Page Content -->
+<div class="px-6 md:px-12 py-8 max-w-[1200px] w-full mx-auto flex-1 flex flex-col gap-8">
+<!-- Header Section -->
+<section class="mb-8">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Başarılarım</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Total Programs -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-level-1 flex items-center gap-4 border border-on-surface">
+<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Toplam Program</p>
+<p class="font-headline-md text-headline-md text-on-surface">5</p>
+</div>
+</div>
+<!-- Completed Programs -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-level-1 flex items-center gap-4 border border-on-surface">
+<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">task_alt</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Tamamlanan</p>
+<p class="font-headline-md text-headline-md text-on-surface">3</p>
+</div>
+</div>
+<!-- Success Rate -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-level-1 flex flex-col gap-3 border border-on-surface">
+<div class="flex justify-between items-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Başarı Yüzdesi</p>
+<span class="font-label-sm text-label-sm font-bold text-secondary">60%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 60%;"></div>
+</div>
+</div>
+</div>
+</section><section class="flex flex-col gap-2">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Programlarım</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Mentörlük yolculuğunuzdaki aktif ve geçmiş eğitim programlarınızı buradan yönetin, ilerlemenizi takip edin.
+                </p>
+</section>
+<!-- Tabs -->
+<div class="border-b border-surface-variant flex gap-8">
+<button id="tab-active" onclick="switchTab('active')" class="pb-4 font-body-md text-body-md font-semibold text-secondary border-b-2 border-secondary transition-soft">
+                    Aktif Programlar
+                </button>
+<button id="tab-past" onclick="switchTab('past')" class="pb-4 font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-soft border-b-2 border-transparent">
+                    Geçmiş Programlar
+                </button>
+</div>
+<!-- Active Programs Grid -->
+<div id="panel-active">
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-level-1 hover:shadow-hover transition-soft flex flex-col gap-5 border border-on-surface">
+<!-- Badge & Options -->
+<div class="flex justify-between items-start">
+<span class="bg-secondary/10 text-on-secondary-container font-label-sm text-label-sm px-3 py-1.5 rounded-full">
+                            Ürün Yönetimi
+                        </span>
+<button class="text-on-surface-variant hover:text-secondary transition-soft">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<!-- Title & Mentor -->
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 line-clamp-2">Ürün Yönetimi Temelleri</h3>
+</div>
+<!-- Progress -->
+<div class="mt-2">
+<div class="flex justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">İlerleme</span>
+<span class="font-label-sm text-label-sm font-bold text-secondary">65%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 65%;"></div>
+</div>
+</div>
+<!-- Next Session & Action -->
+<div class="mt-auto pt-4 border-t border-surface-variant/30 flex flex-col gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant bg-surface-container-low p-3 rounded-lg">
+<span class="material-symbols-outlined text-[18px] text-tertiary">calendar_clock</span>
+<div>
+<p class="font-label-sm text-label-sm text-tertiary">Sonraki Oturum</p>
+<p class="font-body-md text-body-md text-on-surface text-sm">12 Eki, Perşembe • 14:00</p>
+</div>
+</div>
+<button class="w-full bg-secondary text-on-secondary font-body-md text-body-md py-2.5 rounded-lg hover:opacity-90 transition-soft">
+                            Detayları Görüntüle
+                        </button>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-surface-container-lowest rounded-xl p-6 shadow-level-1 hover:shadow-hover transition-soft flex flex-col gap-5 border border-on-surface">
+<div class="flex justify-between items-start">
+<span class="bg-secondary/10 text-on-secondary-container font-label-sm text-label-sm px-3 py-1.5 rounded-full">
+                            Tasarım
+                        </span>
+<button class="text-on-surface-variant hover:text-secondary transition-soft">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3 line-clamp-2">UX Tasarım Stratejileri</h3>
+</div>
+<div class="mt-2">
+<div class="flex justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">İlerleme</span>
+<span class="font-label-sm text-label-sm font-bold text-secondary">30%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 30%;"></div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-surface-variant/30 flex flex-col gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant bg-surface-container-low p-3 rounded-lg">
+<span class="material-symbols-outlined text-[18px] text-tertiary">calendar_clock</span>
+<div>
+<p class="font-label-sm text-label-sm text-tertiary">Sonraki Oturum</p>
+<p class="font-body-md text-body-md text-on-surface text-sm">15 Eki, Pazar • 10:30</p>
+</div>
+</div>
+<button class="w-full bg-secondary text-on-secondary font-body-md text-body-md py-2.5 rounded-lg hover:opacity-90 transition-soft">
+                            Detayları Görüntüle
+                        </button>
+</div>
+</article>
+<!-- Add New Program Card (Ghost style) -->
+<article onclick="window.location.href='create-program.html'" class="bg-surface-container-low/50 rounded-xl p-6 border-2 border-dashed border-on-surface hover:border-secondary transition-soft flex flex-col items-center justify-center gap-4 cursor-pointer group min-h-[380px]">
+<div class="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-soft">
+<span class="material-symbols-outlined text-[32px] text-secondary">add</span>
+</div>
+<div class="text-center">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Yeni Program Oluştur</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Kendi gelişim planınızı oluşturun ve yönetin.</p>
+</div>
+</article>
+</section>
+</div><!-- /panel-active -->
+<!-- Recently Completed Section -->
+<section id="panel-past" class="hidden mt-0">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Son Tamamlananlar</h3>
+<div class="bg-surface-container-lowest rounded-xl shadow-level-1 p-2">
+<!-- List Item 1 -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-surface-container-low transition-soft rounded-lg gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-tertiary shrink-0">
+<span class="material-symbols-outlined">emoji_events</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Agile Metodolojileri ve Scrum</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Tamamlanma: 28 Eylül 2023</p>
+</div>
+</div>
+<button class="flex items-center justify-center gap-2 px-4 py-2 border border-outline text-on-surface font-body-md text-body-md rounded-lg hover:bg-surface-container-low transition-soft sm:w-auto w-full">
+<span class="material-symbols-outlined text-[18px]">workspace_premium</span>
+                            Sertifikayı Gör
+                        </button>
+</div>
+<!-- Divider -->
+<div class="h-[1px] bg-surface-variant mx-4"></div>
+<!-- List Item 2 -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-surface-container-low transition-soft rounded-lg gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-tertiary shrink-0">
+<span class="material-symbols-outlined">emoji_events</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface">Liderlik İletişimi</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Tamamlanma: 15 Ağustos 2023</p>
+</div>
+</div>
+<button class="flex items-center justify-center gap-2 px-4 py-2 border border-outline text-on-surface font-body-md text-body-md rounded-lg hover:bg-surface-container-low transition-soft sm:w-auto w-full">
+<span class="material-symbols-outlined text-[18px]">workspace_premium</span>
+                            Sertifikayı Gör
+                        </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<script>
+        // Tab Switching
+        function switchTab(tab) {
+            const panelActive = document.getElementById('panel-active');
+            const panelPast = document.getElementById('panel-past');
+            const tabActive = document.getElementById('tab-active');
+            const tabPast = document.getElementById('tab-past');
+            const activeClasses = ['text-secondary', 'border-b-2', 'border-secondary', 'font-semibold'];
+            const inactiveClasses = ['text-on-surface-variant', 'border-transparent'];
+
+            if (tab === 'active') {
+                panelActive.classList.remove('hidden');
+                panelPast.classList.add('hidden');
+                activeClasses.forEach(c => tabActive.classList.add(c));
+                inactiveClasses.forEach(c => tabActive.classList.remove(c));
+                inactiveClasses.forEach(c => tabPast.classList.add(c));
+                activeClasses.forEach(c => tabPast.classList.remove(c));
+            } else {
+                panelActive.classList.add('hidden');
+                panelPast.classList.remove('hidden');
+                activeClasses.forEach(c => tabPast.classList.add(c));
+                inactiveClasses.forEach(c => tabPast.classList.remove(c));
+                inactiveClasses.forEach(c => tabActive.classList.add(c));
+                activeClasses.forEach(c => tabActive.classList.remove(c));
+            }
+        }
+
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const openBtn = document.getElementById('open-mobile-nav');
+            const closeBtn = document.getElementById('close-mobile-nav');
+            const overlay = document.getElementById('mobile-nav-overlay');
+
+            function openNav() {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+            }
+
+            function closeNav() {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 200); // match transition duration
+            }
+
+            if(openBtn) openBtn.addEventListener('click', openNav);
+            if(closeBtn) closeBtn.addEventListener('click', closeNav);
+            if(overlay) overlay.addEventListener('click', closeNav);
+        });
+    </script>
+</body></html>

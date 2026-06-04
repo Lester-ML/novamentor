@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>GrowNova - Mentörler</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-primary": "#ffffff",
+            "inverse-primary": "#aaaaaa",
+            "surface-bright": "#ffffff",
+            "on-surface-variant": "#555555",
+            "error": "#c00000",
+            "on-background": "#111111",
+            "surface-container-low": "#f2f2f2",
+            "surface-container-high": "#e5e5e5",
+            "on-tertiary-fixed": "#111111",
+            "surface-variant": "#e0e0e0",
+            "on-primary-container": "#555555",
+            "on-error-container": "#8b0000",
+            "secondary": "#1c1c1e",
+            "on-secondary": "#ffffff",
+            "inverse-surface": "#1c1c1e",
+            "surface-container": "#ebebeb",
+            "primary-fixed-dim": "#aaaaaa",
+            "primary": "#1c1c1e",
+            "secondary-container": "#e8e8e8",
+            "tertiary-container": "#f5f5f5",
+            "tertiary-fixed": "#e0e0e0",
+            "on-primary-fixed-variant": "#444444",
+            "error-container": "#fde8e8",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed-variant": "#333333",
+            "outline-variant": "#dddddd",
+            "background": "#f4f4f4",
+            "primary-container": "#f4f4f4",
+            "primary-fixed": "#e8e8e8",
+            "secondary-fixed-dim": "#aaaaaa",
+            "surface-tint": "#1c1c1e",
+            "on-primary-fixed": "#111111",
+            "on-tertiary-fixed-variant": "#444444",
+            "on-surface": "#111111",
+            "outline": "#999999",
+            "surface": "#ffffff",
+            "surface-container-highest": "#dcdcdc",
+            "secondary-fixed": "#e8e8e8",
+            "on-error": "#ffffff",
+            "on-secondary-fixed": "#111111",
+            "surface-container-lowest": "#ffffff",
+            "inverse-on-surface": "#f5f5f5",
+            "on-secondary-container": "#333333",
+            "surface-dim": "#d4d4d4",
+            "tertiary": "#555555",
+            "tertiary-fixed-dim": "#cccccc",
+            "on-tertiary-container": "#555555"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "container-max": "1200px",
+            "sidebar-width": "260px",
+            "unit-base": "8px",
+            "margin-mobile": "16px",
+            "gutter": "24px"
+          },
+          fontFamily: {
+            "headline-md": ["Manrope", "sans-serif"],
+            "headline-lg-mobile": ["Manrope", "sans-serif"],
+            "label-sm": ["Hanken Grotesk", "sans-serif"],
+            "headline-lg": ["Manrope", "sans-serif"],
+            "body-lg": ["Hanken Grotesk", "sans-serif"],
+            "logo": ["Manrope", "sans-serif"],
+            "body-md": ["Hanken Grotesk", "sans-serif"]
+          },
+          fontSize: {
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "logo": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }]
+          },
+          boxShadow: {
+            "level-1": "0 4px 20px 0 rgba(22, 28, 34, 0.04)",
+            "level-2": "0 8px 30px 0 rgba(22, 28, 34, 0.06)"
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .material-symbols-outlined.filled {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Custom scrollbar for chat */
+    #chat-messages::-webkit-scrollbar { width: 4px; }
+    #chat-messages::-webkit-scrollbar-track { background: transparent; }
+    #chat-messages::-webkit-scrollbar-thumb { background: #c4c7c6; border-radius: 99px; }
+    /* --- Blueprint Dotted Background --- */
+    .bg-dots {
+      background-image: radial-gradient(rgba(148, 163, 184, 0.35) 2px, transparent 2px);
+      background-size: 24px 24px;
+    }
+  </style>
+</head>
+
+<body class="bg-white bg-dots font-body-md text-on-surface h-screen overflow-hidden flex">
+
+  <!-- ========== Sidebar ========== -->
+  <nav class="hidden md:flex flex-col bg-[#F8FAFC] shadow-[4px_0_20px_rgba(0,0,0,0.03)] border-r border-[#E2E8F0] w-[260px] h-screen fixed left-0 top-0 z-20">
+    <div class="flex flex-col h-full py-8">
+
+      <!-- Brand -->
+      <div class="px-6 mb-8 flex items-center gap-3">
+        <div class="w-9 h-9 bg-[#475569] rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined filled text-white text-[20px]">trending_up</span>
+        </div>
+        <div>
+          <h1 class="font-logo text-logo text-[#1E293B] leading-tight">GrowNova</h1>
+          <p class="font-label-sm text-label-sm text-[#64748B]">Planla. Uygula. Başar.</p>
+        </div>
+      </div>
+
+
+
+      <!-- Nav Links -->
+      <div class="flex-1 flex flex-col gap-1 px-2">
+        <a class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent
+                  text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9]
+                  transition-all duration-200" href="dashboard.html">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span class="font-body-md text-body-md">Dashboard</span>
+        </a>
+        <!-- Active -->
+        <a class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-[#475569]
+                  bg-[#F1F5F9] text-[#475569] font-semibold transition-all duration-200"
+           href="mentors.html" aria-current="page">
+          <span class="material-symbols-outlined filled">school</span>
+          <span class="font-body-md text-body-md">Mentörler</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent
+                  text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9]
+                  transition-all duration-200" href="programs.html">
+          <span class="material-symbols-outlined">event_note</span>
+          <span class="font-body-md text-body-md">Programlarım</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent
+                  text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9]
+                  transition-all duration-200" href="settings.html">
+          <span class="material-symbols-outlined">settings</span>
+          <span class="font-body-md text-body-md">Ayarlar</span>
+        </a>
+      </div>
+
+      <!-- Footer Links -->
+      <div class="mt-auto px-2 flex flex-col gap-1 border-t border-[#E2E8F0] pt-4">
+        <a class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent
+                  text-[#64748B] hover:text-red-500 hover:bg-red-50
+                  transition-all duration-200" href="login.html">
+          <span class="material-symbols-outlined">logout</span>
+          <span class="font-body-md text-body-md">Çıkış Yap</span>
+        </a>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ========== Main Content ========== -->
+  <div class="flex-1 flex flex-col md:ml-[260px] h-screen overflow-hidden">
+
+    <!-- Top App Bar -->
+    <header class="flex justify-between items-center w-full px-4 md:px-8 py-4 md:py-5 bg-primary-container/80 backdrop-blur-sm z-30 sticky top-0 border-b border-surface-variant/50 flex-shrink-0">
+
+      <div class="flex items-center gap-3">
+        <!-- Hamburger (mobile only) -->
+        <button class="md:hidden text-on-surface p-2 rounded-xl hover:bg-surface-container-low transition-colors" aria-label="Menüyü aç">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <!-- Logo (desktop) -->
+        <div class="font-logo text-logo text-on-surface tracking-tight font-extrabold hidden md:block">Nova</div>
+        <!-- Logo (mobile) -->
+        <div class="font-logo text-[20px] leading-7 text-on-surface font-extrabold md:hidden">Nova</div>
+      </div>
+
+      <div class="flex items-center gap-2 md:gap-3">
+        <!-- Notifications -->
+        <button class="relative text-on-surface-variant p-2 rounded-full hover:bg-surface-container-low transition-colors" aria-label="Bildirimler">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="pulse-dot absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ========== Chat Canvas ========== -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+
+      <!-- Chat Header (AI Info) -->
+      <div class="flex items-center gap-4 px-4 md:px-8 py-4 border-b border-surface-variant bg-surface-container-lowest/50 flex-shrink-0">
+        <div class="flex-1 min-w-0">
+          <h2 class="font-headline-md text-headline-md text-on-surface leading-tight">Mark</h2>
+          <p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+            Yapay Zeka Asistanınız Çevrimiçi
+          </p>
+        </div>
+      </div>
+
+      <!-- Messages Area -->
+      <div class="flex-1 overflow-y-auto px-4 md:px-8 py-6 space-y-6 flex flex-col" id="chat-messages">
+
+        <!-- Timestamp -->
+        <div class="text-center">
+          <span class="font-label-sm text-label-sm text-on-surface-variant/60 bg-surface-container px-3 py-1 rounded-full">Bugün, 10:42</span>
+        </div>
+
+        <!-- AI Message -->
+        <div class="flex items-end gap-3 self-start max-w-[75%]">
+          <div class="w-8 h-8 rounded-full bg-secondary flex-shrink-0 flex items-center justify-center text-on-secondary font-semibold text-sm mb-1 shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">smart_toy</span>
+          </div>
+          <div class="bg-surface-container-lowest p-4 rounded-2xl rounded-bl-sm shadow-level-1 border border-surface-variant/50">
+            <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+              Merhaba! Bugün hangi konuda yardıma ihtiyacın var? Sana nasıl yardımcı olabilirim?
+            </p>
+          </div>
+        </div>
+
+        <!-- Suggestion chips -->
+        <div class="flex flex-wrap gap-2 pl-11" id="suggestion-chips">
+          <button onclick="aiSelectOption('Program oluştur')" class="px-4 py-2 rounded-full bg-surface-container-lowest border border-surface-variant
+                         font-body-md text-body-md text-on-surface-variant
+                         hover:bg-secondary-container hover:text-on-secondary-container hover:border-secondary-container
+                         transition-all duration-200">
+            ✨ Program oluştur
+          </button>
+          <button onclick="aiSelectOption('Kariyer planlaması')" class="px-4 py-2 rounded-full bg-surface-container-lowest border border-surface-variant
+                         font-body-md text-body-md text-on-surface-variant
+                         hover:bg-secondary-container hover:text-on-secondary-container hover:border-secondary-container
+                         transition-all duration-200">
+            Kariyer planlaması
+          </button>
+          <button onclick="aiSelectOption('Yeni bir yetenek öğrenme')" class="px-4 py-2 rounded-full bg-surface-container-lowest border border-surface-variant
+                         font-body-md text-body-md text-on-surface-variant
+                         hover:bg-secondary-container hover:text-on-secondary-container hover:border-secondary-container
+                         transition-all duration-200">
+            Yeni bir yetenek öğrenme
+          </button>
+          <button onclick="aiSelectOption('Proje geri bildirimi')" class="px-4 py-2 rounded-full bg-surface-container-lowest border border-surface-variant
+                         font-body-md text-body-md text-on-surface-variant
+                         hover:bg-secondary-container hover:text-on-secondary-container hover:border-secondary-container
+                         transition-all duration-200">
+            Proje geri bildirimi
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Input Area -->
+      <div class="flex-shrink-0 px-4 md:px-8 py-4 bg-surface border-t border-surface-variant/50">
+        <div class="relative bg-surface-container-lowest rounded-2xl shadow-level-1 border border-surface-variant
+                    focus-within:border-secondary focus-within:ring-2 focus-within:ring-secondary/20
+                    transition-all flex items-end p-2 pl-4 gap-1">
+          <button class="p-2 text-on-surface-variant hover:text-secondary transition-colors rounded-full hover:bg-surface-container mb-1 flex-shrink-0" aria-label="Dosya ekle">
+            <span class="material-symbols-outlined">attach_file</span>
+          </button>
+          <textarea
+            id="chat-input"
+            class="flex-1 bg-transparent border-none focus:ring-0 resize-none py-3 px-2 max-h-36
+                   text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant/50 outline-none leading-relaxed"
+            placeholder="Bir mesaj yazın..."
+            rows="1"
+          ></textarea>
+          <button onclick="sendMessage()" class="p-3 bg-secondary text-on-secondary rounded-xl hover:bg-secondary/90 active:scale-95
+                         transition-all duration-200 mb-1 flex-shrink-0 flex items-center justify-center shadow-sm"
+                  aria-label="Gönder">
+            <span class="material-symbols-outlined">send</span>
+          </button>
+        </div>
+        <p class="text-center font-label-sm text-[11px] text-on-surface-variant/40 mt-2">
+          AI Mentor yanıtları referans amaçlıdır, önemli kararlar için uzmanlara danışınız.
+        </p>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    let currentAiStep = 0;
+    let generatedProgramContext = "";
+
+    // Auto-resize textarea
+    const textarea = document.getElementById('chat-input');
+    textarea.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 144) + 'px';
+    });
+
+    // Send on Enter (Shift+Enter = new line)
+    textarea.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    function aiSelectOption(option) {
+      const chips = document.getElementById('suggestion-chips');
+      if(chips) chips.style.display = 'none';
+      
+      appendUserMessage(option);
+
+      setTimeout(() => {
+        if (option === 'Program oluştur') {
+          currentAiStep = 1;
+          appendAiMessage("Harika! Bu program tam olarak ne ile ilgili olacak? Hangi alanda kendini geliştirmek istiyorsun?");
+          textarea.focus();
+        } else {
+          appendAiMessage("Şu an sadece 'Program oluştur' özelliği aktif. Lütfen o seçenekle devam edelim 😊");
+        }
+      }, 600);
+    }
+
+    async function sendMessage() {
+      const text = textarea.value.trim();
+      if (!text) return;
+
+      appendUserMessage(text);
+      
+      textarea.value = '';
+      textarea.style.height = 'auto';
+
+      if (currentAiStep === 1) {
+          currentAiStep = 2;
+          generatedProgramContext = text;
+          
+          appendAiMessage("Senin için harika bir müfredat düşünüyorum, lütfen bekle... ⏳");
+          textarea.disabled = true;
+
+          try {
+              const response = await fetch('http://localhost:3000/api/ai-program', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ topic: text })
+              });
+              
+              const data = await response.json();
+              
+              document.getElementById('chat-messages').lastElementChild.remove();
+              
+              if(data.success) {
+                  const htmlResponse = `
+                      Anladım! "<b>${text}</b>" üzerine yoğunlaşacağız. Senin için şu başlıkları öneriyorum:<br><br>
+                      ${data.html}<br><br>
+                      Bu taslağı kullanarak senin için detaylı bir program oluşturayım mı? Eğer onaylıyorsan, programa vermek istediğin <b>adı</b> yazabilirsin.
+                  `;
+                  appendAiMessage(htmlResponse);
+              } else {
+                  appendAiMessage("Bir hata oluştu: " + (data.error || "Sunucudan hatalı yanıt geldi."));
+                  currentAiStep = 1;
+              }
+          } catch(err) {
+              document.getElementById('chat-messages').lastElementChild.remove();
+              appendAiMessage("Bağlantı hatası: " + err.message);
+              currentAiStep = 1;
+          }
+          
+          textarea.disabled = false;
+          textarea.focus();
+      } 
+      else if (currentAiStep === 2) {
+          setTimeout(() => {
+              appendAiMessage(`Harika! "<b>${text}</b>" başarıyla oluşturuldu ve Programlarım sekmesine eklendi. Seni oraya yönlendiriyorum...`);
+              textarea.disabled = true;
+              
+              setTimeout(() => {
+                  window.location.href = 'programs.html';
+              }, 2000);
+          }, 800);
+      } else {
+          setTimeout(() => {
+            appendAiMessage("Ben Nova AI. Sana en iyi 'Program oluştur' diyerek yardımcı olabilirim. Lütfen önerilerden birini seç.");
+          }, 600);
+      }
+    }
+
+    function appendUserMessage(text) {
+      const container = document.getElementById('chat-messages');
+      const userMsg = document.createElement('div');
+      userMsg.className = 'flex items-end justify-end gap-3 self-end max-w-[75%] ml-auto';
+      userMsg.innerHTML = `
+        <div class="bg-secondary p-4 rounded-2xl rounded-br-sm shadow-level-1">
+          <p class="font-body-md text-body-md text-on-secondary leading-relaxed">${text.replace(/</g,'&lt;')}</p>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-surface-container flex-shrink-0 flex items-center justify-center text-on-surface-variant font-semibold text-sm mb-1">Z</div>
+      `;
+      container.appendChild(userMsg);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendAiMessage(html) {
+      const container = document.getElementById('chat-messages');
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'flex items-end gap-3 self-start max-w-[75%]';
+      aiMsg.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-secondary flex-shrink-0 flex items-center justify-center text-on-secondary font-semibold text-sm mb-1 shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">smart_toy</span>
+        </div>
+        <div class="bg-surface-container-lowest p-4 rounded-2xl rounded-bl-sm shadow-level-1 border border-surface-variant/50">
+          <div class="font-body-md text-body-md text-on-surface leading-relaxed">
+            ${html}
+          </div>
+        </div>
+      `;
+      container.appendChild(aiMsg);
+      container.scrollTop = container.scrollHeight;
+    }
+  </script>
+
+</body>
+</html>

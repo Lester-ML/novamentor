@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html class="light" lang="tr">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>GrowNova - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#aaaaaa",
+                        "surface-bright": "#ffffff",
+                        "on-surface-variant": "#555555",
+                        "error": "#c00000",
+                        "on-background": "#111111",
+                        "surface-container-low": "#f2f2f2",
+                        "surface-container-high": "#e5e5e5",
+                        "on-tertiary-fixed": "#111111",
+                        "surface-variant": "#e0e0e0",
+                        "on-primary-container": "#555555",
+                        "on-error-container": "#8b0000",
+                        "secondary": "#1c1c1e",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#1c1c1e",
+                        "surface-container": "#ebebeb",
+                        "primary-fixed-dim": "#aaaaaa",
+                        "primary": "#1c1c1e",
+                        "secondary-container": "#e8e8e8",
+                        "tertiary-container": "#f5f5f5",
+                        "tertiary-fixed": "#e0e0e0",
+                        "on-primary-fixed-variant": "#444444",
+                        "error-container": "#fde8e8",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#333333",
+                        "outline-variant": "#dddddd",
+                        "background": "#f4f4f4",
+                        "primary-container": "#f4f4f4",
+                        "primary-fixed": "#e8e8e8",
+                        "secondary-fixed-dim": "#aaaaaa",
+                        "surface-tint": "#1c1c1e",
+                        "on-primary-fixed": "#111111",
+                        "on-tertiary-fixed-variant": "#444444",
+                        "on-surface": "#111111",
+                        "outline": "#999999",
+                        "surface": "#ffffff",
+                        "surface-container-highest": "#dcdcdc",
+                        "secondary-fixed": "#e8e8e8",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#111111",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#f5f5f5",
+                        "on-secondary-container": "#333333",
+                        "surface-dim": "#d4d4d4",
+                        "tertiary": "#555555",
+                        "tertiary-fixed-dim": "#cccccc",
+                        "on-tertiary-container": "#555555"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem"
+                    },
+                    spacing: {
+                        "gutter": "24px",
+                        "sidebar-width": "260px",
+                        "margin-mobile": "16px",
+                        "unit-base": "8px",
+                        "container-max": "1200px"
+                    },
+                    fontFamily: {
+                        "headline-lg": ["Manrope", "sans-serif"],
+                        "label-sm": ["Hanken Grotesk", "sans-serif"],
+                        "body-lg": ["Hanken Grotesk", "sans-serif"],
+                        "headline-lg-mobile": ["Manrope", "sans-serif"],
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "logo": ["Manrope", "sans-serif"],
+                        "body-md": ["Hanken Grotesk", "sans-serif"]
+                    },
+                    fontSize: {
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }],
+                        "body-lg": ["16px", { lineHeight: "26px", fontWeight: "400" }],
+                        "headline-lg-mobile": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "headline-md": ["20px", { lineHeight: "28px", fontWeight: "500" }],
+                        "logo": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "600" }],
+                        "body-md": ["14px", { lineHeight: "22px", fontWeight: "400" }]
+                    },
+                    boxShadow: {
+                        'level-1': '0 4px 20px 0 rgba(22, 28, 34, 0.04)',
+                        'level-2': '0 8px 30px 0 rgba(22, 28, 34, 0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* --- Sidebar Drawer Transitions --- */
+        #sidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #sidebar.sidebar-open {
+            transform: translateX(0) !important;
+        }
+
+        /* --- Overlay --- */
+        #sidebar-overlay {
+            transition: opacity 0.3s ease;
+        }
+
+        #sidebar-overlay.overlay-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- Notification dot pulse --- */
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.3);
+                opacity: 0.7;
+            }
+        }
+
+        .pulse-dot {
+            animation: pulse-dot 2s ease-in-out infinite;
+
+            /* --- Blueprint Dotted Background --- */
+            .bg-dots {
+                background-image: radial-gradient(rgba(148, 163, 184, 0.35) 2px, transparent 2px);
+                background-size: 24px 24px;
+            }
+    </style>
+</head>
+
+<body class="bg-white bg-dots text-on-surface font-body-lg min-h-screen flex antialiased">
+
+    <!-- ========== Mobile Overlay ========== -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-40 opacity-0 pointer-events-none md:hidden"
+        onclick="closeSidebar()" aria-hidden="true"></div>
+
+    <!-- ========== Sidebar ========== -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-full w-[260px] bg-[#F8FAFC] shadow-[4px_0_20px_rgba(0,0,0,0.03)] z-50 flex flex-col
+           -translate-x-full md:translate-x-0 border-r border-[#E2E8F0]" aria-label="Ana Navigasyon">
+        <div class="flex flex-col h-full py-8">
+
+            <!-- Brand -->
+            <div class="px-6 mb-8 flex items-center gap-3">
+                <div class="w-9 h-9 bg-[#475569] rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+                    <span class="material-symbols-outlined text-white text-[20px]" data-weight="fill">trending_up</span>
+                </div>
+                <div>
+                    <h1 class="font-headline-md text-headline-md text-[#1E293B] leading-tight">GrowNova</h1>
+                    <p class="font-label-sm text-label-sm text-[#64748B]">Planla. Uygula. Başar.</p>
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="px-4 mb-8">
+                <a href="create-program.html" onclick="window.location.href='create-program.html'; return false;"
+                    id="new-session-btn" class="w-full bg-[#475569] text-white rounded-xl py-3 font-body-lg font-semibold shadow-sm
+                 hover:bg-[#334155] active:scale-[0.98] transition-all duration-200
+                 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">add</span>
+                    Yeni Seans
+                </a>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="flex-1 flex flex-col gap-1 px-2" aria-label="Ana menü">
+                <a href="dashboard.html" class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-[#475569] bg-[#F1F5F9]
+                 text-[#475569] font-semibold transition-all duration-200" aria-current="page">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="font-body-md text-body-md">Dashboard</span>
+                </a>
+                <a href="mentors.html" class="nav-link flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent
+                           text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9]
+                           transition-all duration-200">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="font-body-md text-body-md">Mentörler</span>
+                </a>
+                <a href="programs.html" class="nav-link flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent
+                           text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9]
+                           transition-all duration-200">
+                    <span class="material-symbols-outlined">event_note</span>
+                    <span class="font-body-md text-body-md">Programlarım</span>
+                </a>
+                <a href="settings.html" class="nav-link flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent
+                           text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9]
+                           transition-all duration-200">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="font-body-md text-body-md">Ayarlar</span>
+                </a>
+            </nav>
+
+            <!-- Footer Navigation -->
+            <div class="mt-auto flex flex-col gap-1 px-2 border-t border-[#E2E8F0] pt-4">
+                <a href="login.html" class="nav-link flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent
+                           text-[#64748B] hover:text-red-500 hover:bg-red-50
+                           transition-all duration-200">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="font-body-md text-body-md">Çıkış Yap</span>
+                </a>
+            </div>
+
+        </div>
+    </aside>
+
+    <!-- ========== Main Content ========== -->
+    <main class="flex-1 w-full md:pl-[260px] flex flex-col min-h-screen">
+
+        <!-- Top App Bar -->
+        <header
+            class="flex justify-between items-center w-full px-4 md:px-8 py-4 md:py-5 bg-primary-container/80 backdrop-blur-sm z-30 sticky top-0 border-b border-surface-variant/50">
+
+            <div class="flex items-center gap-3">
+                <!-- Hamburger (mobile only) -->
+                <button id="hamburger-btn"
+                    class="md:hidden text-on-surface p-2 rounded-xl hover:bg-surface-container-low transition-colors"
+                    aria-label="Menüyü aç" onclick="openSidebar()">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+
+                <!-- Logo text (desktop) -->
+                <div class="font-logo text-logo text-on-surface tracking-tight font-extrabold hidden md:block">
+                    Nova
+                </div>
+                <!-- Logo text (mobile) -->
+                <div class="font-logo text-[20px] leading-7 text-on-surface font-extrabold md:hidden">
+                    Nova
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 md:gap-3">
+
+                <!-- Notifications -->
+                <button
+                    class="relative text-on-surface-variant p-2 rounded-full hover:bg-surface-container-low transition-colors"
+                    aria-label="Bildirimler">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <!-- Notification dot -->
+                    <span class="pulse-dot absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ========== Canvas ========== -->
+        <div class="flex-1 p-4 md:p-8 max-w-[1200px] mx-auto w-full flex flex-col gap-6 md:gap-8">
+
+            <!-- Welcome Header -->
+            <section class="flex flex-col gap-1">
+                <h2 class="font-headline-lg text-headline-lg text-on-surface hidden md:block">Hoş Geldin, Zeynep 👋</h2>
+                <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface md:hidden">Hoş Geldin, Zeynep
+                    👋</h2>
+                <p class="font-body-lg text-body-lg text-on-surface-variant">Kariyer yolculuğunda yeni bir adım at.</p>
+            </section>
+
+            <!-- Bento Grid Cards -->
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6" aria-label="Hızlı Başlangıç">
+
+                <!-- Card 1: Design Your Own Program -->
+                <div class="group bg-surface-container-lowest rounded-3xl p-6 md:p-8 shadow-level-1 hover:shadow-level-2
+                 transition-all duration-300 border border-transparent hover:border-secondary/10
+                 flex flex-col h-[280px] md:h-[360px] relative overflow-hidden cursor-pointer" role="button"
+                    tabindex="0" aria-label="Kendi Programını Tasarla" onclick="window.location.href='create-program.html'">
+                    <!-- Decorative blob -->
+                    <div
+                        class="absolute -right-16 -bottom-16 w-56 h-56 bg-secondary-container/40 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700 ease-in-out pointer-events-none">
+                    </div>
+
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div
+                            class="w-12 h-12 md:w-14 md:h-14 bg-surface rounded-2xl flex items-center justify-center shadow-sm mb-5 text-secondary border border-surface-variant flex-shrink-0">
+                            <span class="material-symbols-outlined text-[24px] md:text-[28px]"
+                                data-weight="fill">edit_square</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Kendi Programını Tasarla</h3>
+                        <p
+                            class="font-body-md text-body-md text-on-surface-variant max-w-[85%] mb-auto leading-relaxed">
+                            Hedeflerine uygun mentörleri seç, görüşme sıklığını belirle ve tamamen sana özel bir gelişim
+                            planı oluştur.
+                        </p>
+                        <div
+                            class="mt-5 flex items-center gap-2 text-secondary font-label-sm text-label-sm group-hover:translate-x-2 transition-transform duration-300">
+                            <span>Program Oluştur</span>
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Create Program with AI -->
+                <div class="group bg-secondary rounded-3xl p-6 md:p-8 shadow-level-1 hover:shadow-level-2
+                 transition-all duration-300 flex flex-col h-[280px] md:h-[360px] relative overflow-hidden cursor-pointer"
+                    role="button" tabindex="0" aria-label="Yapay Zeka ile Program Oluştur" onclick="window.location.href='mentors.html'">
+                    <!-- Decorative gradients -->
+                    <div
+                        class="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none">
+                    </div>
+                    <div
+                        class="absolute -right-10 top-8 w-44 h-44 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-all duration-700 pointer-events-none">
+                    </div>
+                    <div
+                        class="absolute -left-8 -bottom-8 w-36 h-36 bg-black/10 rounded-full blur-2xl pointer-events-none">
+                    </div>
+
+                    <div class="relative z-10 flex flex-col h-full text-on-secondary">
+                        <div
+                            class="w-12 h-12 md:w-14 md:h-14 bg-on-secondary/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-5 text-on-secondary border border-on-secondary/20 flex-shrink-0">
+                            <span class="material-symbols-outlined text-[24px] md:text-[28px]"
+                                data-weight="fill">auto_awesome</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md mb-2">Yapay Zeka ile Program Oluştur</h3>
+                        <p class="font-body-md text-body-md text-on-secondary/80 max-w-[85%] mb-auto leading-relaxed">
+                            Nova AI, yeteneklerini ve hedeflerini analiz ederek senin için en uygun mentörlük rotasını
+                            saniyeler içinde çizsin.
+                        </p>
+                        <div
+                            class="mt-5 flex items-center gap-2 text-on-secondary font-label-sm text-label-sm group-hover:translate-x-2 transition-transform duration-300">
+                            <span>AI Asistanı Başlat</span>
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upcoming Sessions -->
+            <section aria-label="Yaklaşan Görüşmeler">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Yaklaşan Görüşmeler</h3>
+
+                <!-- Empty State -->
+                <div class="bg-surface-container-lowest rounded-2xl p-5 md:p-6 shadow-level-1 flex items-center gap-4">
+                    <div
+                        class="w-11 h-11 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant flex-shrink-0">
+                        <span class="material-symbols-outlined text-[22px]">event_busy</span>
+                    </div>
+                    <div>
+                        <p class="font-body-lg text-body-lg text-on-surface font-medium leading-snug">Henüz planlanmış
+                            bir görüşmen yok</p>
+                        <p class="font-body-md text-body-md text-on-surface-variant mt-0.5">Yukarıdaki seçeneklerden
+                            birini kullanarak programını oluşturmaya başla.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </script>
+
+</body>
+
+</html>

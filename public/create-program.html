@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Program Oluştur | GrowNova</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            "headline-md": ["Manrope", "sans-serif"],
+            "body-md": ["Hanken Grotesk", "sans-serif"],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+    
+    /* Timetable styles */
+    .timetable-row {
+      display: flex;
+      min-height: 140px; 
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .day-column {
+      width: 140px;
+      flex-shrink: 0;
+      border-right: 1px solid #E2E8F0;
+      background-color: #F8FAFC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #475569;
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+    }
+    .drop-zone {
+      flex: 1;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: background-color 0.2s;
+    }
+    .drop-zone.drag-over {
+      background-color: rgba(71, 85, 105, 0.05);
+    }
+    
+    /* Block styles */
+    .draggable-item {
+      cursor: grab;
+      user-select: none;
+      width: 220px;
+      height: 120px;
+      flex-shrink: 0; /* Yatayda sıkışmayı önler */
+      border-radius: 4px; /* Köşesiz, kağıt hissi için keskin hatlar */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.2); 
+      transition: transform 0.1s, box-shadow 0.2s;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .draggable-item:hover {
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+    .draggable-item:active { cursor: grabbing; }
+    .draggable-item.dragging { opacity: 0.5; transform: scale(0.95); }
+    
+    .block-header {
+      font-weight: 800;
+      font-size: 18px;
+      margin-bottom: 0;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .block-notes {
+      font-size: 12px;
+      opacity: 0.9;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+
+    .block-overlay {
+      transition: opacity 0.2s;
+    }
+    
+    /* Side Panel */
+    #sidePanel {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .panel-open { transform: translateX(0); }
+    .panel-closed { transform: translateX(100%); }
+  </style>
+</head>
+<body class="h-screen w-screen flex flex-col font-body-md text-[#1E293B] bg-white overflow-hidden">
+
+  <!-- Header -->
+  <header class="w-full bg-white border-b border-[#E2E8F0] px-4 py-3 flex items-center justify-between shadow-sm z-10 shrink-0">
+    <div class="flex items-center gap-4">
+      <a href="dashboard.html" class="flex items-center gap-2 text-[#475569] hover:text-[#1E293B] transition-colors font-bold bg-[#F8FAFC] px-3 py-2 rounded-lg border border-[#E2E8F0]">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span> Geri Dön
+      </a>
+      <h1 class="font-headline-md text-lg font-extrabold text-[#1E293B]">Program Oluşturucu</h1>
+    </div>
+    <button onclick="openSaveProgramModal()" class="flex items-center gap-2 bg-[#10B981] hover:bg-[#059669] text-white px-5 py-2.5 rounded-lg font-bold shadow-md transition-all active:scale-95">
+      <span class="material-symbols-outlined text-[20px]">save</span> Programı Oluştur
+    </button>
+  </header>
+
+  <!-- Main Area -->
+  <main class="flex-1 flex overflow-hidden relative">
+    
+    <!-- Timetable -->
+    <div class="flex-1 flex flex-col overflow-y-auto" id="timetable-container">
+      <div class="timetable-row border-t-0">
+        <div class="day-column">Pazartesi</div>
+        <div class="drop-zone" id="dz-pazartesi"></div>
+      </div>
+      <div class="timetable-row">
+        <div class="day-column">Salı</div>
+        <div class="drop-zone" id="dz-sali"></div>
+      </div>
+      <div class="timetable-row">
+        <div class="day-column">Çarşamba</div>
+        <div class="drop-zone" id="dz-carsamba"></div>
+      </div>
+      <div class="timetable-row">
+        <div class="day-column">Perşembe</div>
+        <div class="drop-zone" id="dz-persembe"></div>
+      </div>
+      <div class="timetable-row border-b-0">
+        <div class="day-column">Cuma</div>
+        <div class="drop-zone" id="dz-cuma"></div>
+      </div>
+      <!-- Empty space for scrolling padding so bottom bar doesn't hide last row -->
+      <div class="h-40 w-full shrink-0"></div>
+    </div>
+
+    <!-- Bottom Bar (Palette/Pool for template blocks) -->
+    <div class="absolute bottom-0 left-0 w-full bg-[#F8FAFC] border-t border-[#E2E8F0] p-4 flex items-center gap-4 z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <button onclick="openPanel()" class="shrink-0 flex items-center justify-center gap-2 bg-[#1E293B] text-white w-56 h-[110px] rounded-xl font-bold hover:bg-[#334155] active:scale-95 transition-all shadow-md">
+        <span class="material-symbols-outlined text-3xl">add</span>
+        <span class="text-lg">Yeni Tür Ekle</span>
+      </button>
+      
+      <!-- Pool for blocks -->
+      <div class="flex-1 drop-zone flex-nowrap items-center gap-4 overflow-x-auto h-[130px] p-2 bg-white rounded-xl border border-[#E2E8F0]" id="bottom-pool" style="min-height: unset; flex-wrap: nowrap; overflow-y: hidden;">
+        <span id="empty-state" class="text-[#94A3B8] font-semibold text-sm absolute pointer-events-none px-4">Oluşturduğunuz şablonlar burada kalır. Günlere sürükleyip kopyalarını oluşturabilirsiniz.</span>
+      </div>
+    </div>
+
+    <!-- Right Side Panel (Block Creation Only) -->
+    <div id="sidePanel" class="fixed top-0 right-0 h-full w-[400px] bg-white shadow-[-10px_0_30px_rgba(0,0,0,0.1)] z-50 flex flex-col border-l border-[#E2E8F0] panel-closed">
+      
+      <!-- Panel Header -->
+      <div class="px-6 py-5 border-b border-[#E2E8F0] flex justify-between items-center bg-[#F8FAFC]">
+        <h2 class="text-xl font-bold text-[#1E293B] font-headline-md">Yeni Şablon Türü</h2>
+        <button onclick="closePanel()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#E2E8F0] text-[#64748B] transition-colors">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+      
+      <!-- Panel Body -->
+      <div class="flex-1 overflow-y-auto p-6 space-y-6">
+        <div>
+          <label class="block text-xs font-extrabold text-[#64748B] uppercase tracking-wide mb-2">Blok Adı</label>
+          <input type="text" id="blockName" class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-4 py-3 focus:outline-none focus:border-[#475569] transition-colors text-sm font-semibold text-[#1E293B]" placeholder="Örn: Algoritma Çözümü">
+        </div>
+        
+        <div>
+          <label class="block text-xs font-extrabold text-[#64748B] uppercase tracking-wide mb-3">Renk</label>
+          <div class="grid grid-cols-4 gap-y-5 gap-x-2" id="colorPicker">
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#3B82F6]" data-color="bg-[#3B82F6]" title="Mavi"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Mavi</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#10B981]" data-color="bg-[#10B981]" title="Zümrüt"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Zümrüt</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#8B5CF6]" data-color="bg-[#8B5CF6]" title="Mor"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Mor</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#F59E0B]" data-color="bg-[#F59E0B]" title="Kehribar"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Kehribar</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#EF4444]" data-color="bg-[#EF4444]" title="Kırmızı"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Kırmızı</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#475569] ring-[#475569] scale-110" data-color="bg-[#475569]" title="Gri"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Gri</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#EC4899]" data-color="bg-[#EC4899]" title="Pembe"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Pembe</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#14B8A6]" data-color="bg-[#14B8A6]" title="Turkuaz"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Turkuaz</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#6366F1]" data-color="bg-[#6366F1]" title="İndigo"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">İndigo</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#0EA5E9]" data-color="bg-[#0EA5E9]" title="Gök Mavi"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Gök Mavi</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#F97316]" data-color="bg-[#F97316]" title="Turuncu"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Turuncu</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#84CC16]" data-color="bg-[#84CC16]" title="Fıstık"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Fıstık</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#57534E]" data-color="bg-[#57534E]" title="Taş"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Taş</span>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <button class="color-btn w-10 h-10 rounded-full shadow-sm border-2 border-transparent ring-2 ring-transparent bg-[#0F172A]" data-color="bg-[#0F172A]" title="Gece"></button>
+              <span class="text-[10px] font-bold text-[#64748B] text-center leading-tight">Gece</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Panel Footer -->
+      <div class="p-6 border-t border-[#E2E8F0] flex gap-3 bg-[#F8FAFC]">
+        <button onclick="createBlock()" class="flex-1 px-4 py-3 bg-[#475569] text-white font-bold rounded-xl hover:bg-[#334155] transition-colors shadow-sm">
+          Şablon Oluştur
+        </button>
+      </div>
+    </div>
+
+    <!-- Center Modal (For Editing Notes and Title) -->
+    <div id="editModal" class="fixed inset-0 bg-[#0F172A]/50 backdrop-blur-sm z-[60] hidden items-center justify-center">
+      <div class="bg-white w-full max-w-lg rounded-3xl p-8 shadow-2xl scale-95 opacity-0 transition-all duration-200" id="editModalContent">
+        <div class="flex items-center gap-3 mb-6">
+          <div id="editModalColor" class="w-6 h-6 rounded-[0.4rem] shadow-sm"></div>
+          <h2 class="text-2xl font-bold text-[#1E293B] font-headline-md">Bloğu Düzelt</h2>
+        </div>
+        
+        <div class="space-y-5">
+          <div>
+            <label class="block text-xs font-extrabold text-[#64748B] uppercase tracking-wide mb-2">Başlık</label>
+            <input type="text" id="editModalName" class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-4 py-3 focus:outline-none focus:border-[#475569] transition-colors text-sm font-bold text-[#1E293B]">
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-[#64748B] uppercase tracking-wide mb-2">Blok Rengi</label>
+            <div class="relative">
+              <select id="editModalColorSelect" onchange="document.getElementById('editModalColor').className = 'w-6 h-6 rounded-[0.4rem] shadow-sm ' + this.value;" class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-4 py-3 focus:outline-none focus:border-[#475569] transition-colors text-sm font-bold text-[#1E293B] appearance-none cursor-pointer">
+                <option value="bg-[#3B82F6]">Mavi</option>
+                <option value="bg-[#10B981]">Zümrüt Yeşili</option>
+                <option value="bg-[#8B5CF6]">Mor</option>
+                <option value="bg-[#F59E0B]">Kehribar</option>
+                <option value="bg-[#EF4444]">Kırmızı</option>
+                <option value="bg-[#475569]">Slate Gri</option>
+                <option value="bg-[#EC4899]">Pembe</option>
+                <option value="bg-[#14B8A6]">Turkuaz</option>
+                <option value="bg-[#6366F1]">İndigo</option>
+                <option value="bg-[#0EA5E9]">Açık Mavi</option>
+                <option value="bg-[#F97316]">Turuncu</option>
+                <option value="bg-[#84CC16]">Açık Yeşil</option>
+                <option value="bg-[#57534E]">Taş Gri</option>
+                <option value="bg-[#0F172A]">Gece Mavisi</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
+                <span class="material-symbols-outlined text-[#64748B]">expand_more</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-[#64748B] uppercase tracking-wide mb-2">İçerik (Notlar)</label>
+            <textarea id="editModalNotes" rows="5" class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-4 py-3 focus:outline-none focus:border-[#475569] transition-colors text-sm text-[#1E293B] resize-none" placeholder="Bu derste/seansta neler yapılacak?"></textarea>
+          </div>
+        </div>
+        
+        <div class="flex gap-3 mt-8">
+          <button onclick="closeEditModal()" class="flex-1 px-4 py-3.5 bg-[#F1F5F9] text-[#475569] font-bold rounded-xl hover:bg-[#E2E8F0] transition-colors">İptal</button>
+          <button onclick="saveEdit()" class="flex-1 px-4 py-3.5 bg-[#475569] text-white font-bold rounded-xl hover:bg-[#334155] transition-colors shadow-sm">Onayla ve Kaydet</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Program Modal -->
+    <div id="saveProgramModal" class="fixed inset-0 bg-[#0F172A]/50 backdrop-blur-sm z-[70] hidden items-center justify-center">
+      <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl scale-95 opacity-0 transition-all duration-200" id="saveProgramContent">
+        <h2 class="text-2xl font-bold text-[#1E293B] font-headline-md mb-6">Programı Kaydet</h2>
+        
+        <div class="space-y-5">
+          <div>
+            <label class="block text-xs font-extrabold text-[#64748B] uppercase tracking-wide mb-2">Program Başlığı</label>
+            <input type="text" id="saveProgramTitle" class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-4 py-3 focus:outline-none focus:border-[#10B981] transition-colors text-sm font-bold text-[#1E293B]" placeholder="Örn: Backend Geliştirme Kampı">
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-[#64748B] uppercase tracking-wide mb-2">Program Konusu</label>
+            <textarea id="saveProgramSubject" rows="3" class="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-4 py-3 focus:outline-none focus:border-[#10B981] transition-colors text-sm text-[#1E293B] resize-none" placeholder="Bu program içeriği ne hakkında?"></textarea>
+          </div>
+        </div>
+        
+        <div class="flex gap-3 mt-8">
+          <button onclick="closeSaveProgramModal()" class="flex-1 px-4 py-3.5 bg-[#F1F5F9] text-[#475569] font-bold rounded-xl hover:bg-[#E2E8F0] transition-colors">İptal</button>
+          <button onclick="confirmSaveProgram()" class="flex-1 px-4 py-3.5 bg-[#10B981] text-white font-bold rounded-xl hover:bg-[#059669] transition-colors shadow-sm">Onayla ve Bitir</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let selectedColor = 'bg-[#475569]';
+    let blockCounter = 0;
+    let editingBlockId = null;
+
+    // --- Clicking Outside to Close Overlays ---
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.draggable-item')) {
+        document.querySelectorAll('.block-overlay, .status-overlay').forEach(overlay => {
+          overlay.classList.add('hidden');
+          overlay.classList.remove('flex');
+        });
+      }
+    });
+
+    // --- Save Program Modal Logic ---
+    function openSaveProgramModal() {
+      const modal = document.getElementById('saveProgramModal');
+      const content = document.getElementById('saveProgramContent');
+      
+      document.getElementById('saveProgramTitle').value = '';
+      document.getElementById('saveProgramSubject').value = '';
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      
+      setTimeout(() => document.getElementById('saveProgramTitle').focus(), 50);
+      setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    function closeSaveProgramModal() {
+      const modal = document.getElementById('saveProgramModal');
+      const content = document.getElementById('saveProgramContent');
+      
+      content.classList.remove('scale-100', 'opacity-100');
+      content.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+      }, 200);
+    }
+
+    function confirmSaveProgram() {
+      const title = document.getElementById('saveProgramTitle').value.trim();
+      const subject = document.getElementById('saveProgramSubject').value.trim();
+
+      if (!title || !subject) {
+        alert('Lütfen başlık ve konu alanlarını doldurun.');
+        return;
+      }
+
+      // TODO: İleride Backend bağlantısı ile oluşturulan tüm blokların JSON verisi gönderilecek
+      
+      // Şimdilik sadece frontend simülasyonu olarak programs.html'e yönlendiriyoruz
+      window.location.href = 'programs.html';
+    }
+
+    // --- Create Panel ---
+    function openPanel() {
+      const panel = document.getElementById('sidePanel');
+      document.getElementById('blockName').value = '';
+      setColor('bg-[#475569]');
+      panel.classList.remove('panel-closed');
+      panel.classList.add('panel-open');
+      setTimeout(() => document.getElementById('blockName').focus(), 300);
+    }
+
+    function closePanel() {
+      const panel = document.getElementById('sidePanel');
+      panel.classList.remove('panel-open');
+      panel.classList.add('panel-closed');
+    }
+
+    // Color buttons
+    document.querySelectorAll('.color-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        setColor(e.target.getAttribute('data-color'));
+      });
+    });
+
+    function setColor(colorClass) {
+      document.querySelectorAll('.color-btn').forEach(b => {
+        b.classList.remove('ring-[#475569]', 'scale-110');
+        b.classList.add('ring-transparent');
+      });
+      const targetBtn = document.querySelector(`.color-btn[data-color="${colorClass}"]`);
+      if(targetBtn) {
+        targetBtn.classList.remove('ring-transparent');
+        targetBtn.classList.add('ring-[#475569]', 'scale-110');
+      }
+      selectedColor = colorClass;
+    }
+
+    function createBlock() {
+      const name = document.getElementById('blockName').value.trim();
+      if(!name) { alert("Lütfen blok adı girin."); return; }
+
+      blockCounter++;
+      const blockId = 'block-' + blockCounter;
+
+      const emptyState = document.getElementById('empty-state');
+      if(emptyState) emptyState.style.display = 'none';
+
+      const el = document.createElement('div');
+      el.id = blockId;
+      el.className = `draggable-item ${selectedColor} flex flex-col group cursor-pointer`;
+      el.draggable = true;
+      
+      el.dataset.name = name;
+      el.dataset.colorClass = selectedColor;
+      el.dataset.notes = "";
+      el.dataset.status = "none";
+
+      if (el.dataset.status === 'fail') {
+         el.classList.add('opacity-60', 'grayscale');
+      }
+
+      renderBlockInner(el);
+
+      // Attach events
+      attachBlockEvents(el);
+
+      document.getElementById('bottom-pool').appendChild(el);
+      closePanel();
+    }
+
+    function attachBlockEvents(el) {
+      el.addEventListener('dragstart', handleDragStart);
+      el.addEventListener('dragend', handleDragEnd);
+      
+      // Sol Tıklama (Left Click) ile Durum Menüsünü Açma (Tik/Çarpı)
+      el.addEventListener('click', (e) => {
+        if(e.target.closest('button')) return;
+        const overlay = el.querySelector('.status-overlay');
+        const isHidden = overlay.classList.contains('hidden');
+        
+        document.querySelectorAll('.block-overlay, .status-overlay').forEach(o => {
+          o.classList.add('hidden');
+          o.classList.remove('flex');
+        });
+
+        if(isHidden) {
+          overlay.classList.remove('hidden');
+          overlay.classList.add('flex');
+        }
+      });
+
+      // Sağ Tıklama (Right Click) ile Aksiyon Menüsünü Açma (Sil/Düzelt)
+      el.addEventListener('contextmenu', (e) => {
+        e.preventDefault(); 
+        if(e.target.closest('button')) return;
+        
+        const overlay = el.querySelector('.block-overlay');
+        const isHidden = overlay.classList.contains('hidden');
+        
+        document.querySelectorAll('.block-overlay, .status-overlay').forEach(o => {
+          o.classList.add('hidden');
+          o.classList.remove('flex');
+        });
+
+        if(isHidden) {
+          overlay.classList.remove('hidden');
+          overlay.classList.add('flex');
+        }
+      });
+    }
+
+    function renderBlockInner(el) {
+      const name = el.dataset.name;
+      const notes = el.dataset.notes;
+      const blockId = el.id;
+      const status = el.dataset.status;
+
+      const formattedNotes = notes.trim() ? notes.split('\n').filter(n => n.trim() !== '').map(n => '&bull; ' + n).join('<br/>') : '';
+
+      const statusHtml = status === 'success' 
+         ? '<div class="absolute top-1.5 left-1.5 z-10 w-5 h-5 rounded-full bg-green-500 flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-white text-[14px] font-bold">check</span></div>'
+         : status === 'fail'
+         ? '<div class="absolute top-1.5 left-1.5 z-10 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-white text-[14px] font-bold">close</span></div>'
+         : '';
+
+      el.innerHTML = `
+        ${statusHtml}
+        <div class="relative w-full text-center pt-3 px-6 pb-1">
+          <span class="block-header inline-block w-full" title="${name}">${name}</span>
+          <span class="material-symbols-outlined text-[16px] opacity-60 absolute top-2 right-1 cursor-grab" title="Sürükle">drag_indicator</span>
+        </div>
+        <!-- Kenarlara değmeyen çizgi -->
+        <div class="mx-3 mt-0 mb-1.5 h-[1.5px] bg-white/40 rounded-full"></div>
+        <!-- Notların yazılacağı orta kısım -->
+        <div class="block-notes px-3 pb-1 flex-1 text-left">${formattedNotes}</div>
+        
+        <!-- Status Overlay (Left Click) -->
+        <div class="status-overlay absolute inset-0 bg-black/70 hidden flex-row items-center justify-center gap-3 rounded-[4px] z-20">
+          <button onclick="event.stopPropagation(); setBlockStatus('${blockId}', 'success')" class="w-10 h-10 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center text-white shadow-xl transition-transform hover:scale-110" title="Tamamlandı">
+            <span class="material-symbols-outlined text-[20px]">check</span>
+          </button>
+          <button onclick="event.stopPropagation(); setBlockStatus('${blockId}', 'fail')" class="w-10 h-10 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white shadow-xl transition-transform hover:scale-110" title="İptal Edildi">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+          </button>
+          <button onclick="event.stopPropagation(); setBlockStatus('${blockId}', 'none')" class="w-8 h-8 bg-slate-500 hover:bg-slate-600 rounded-full flex items-center justify-center text-white shadow-xl transition-transform hover:scale-110" title="Temizle">
+            <span class="material-symbols-outlined text-[16px]">refresh</span>
+          </button>
+        </div>
+
+        <!-- Hover/Click Overlay for Actions (Right Click) -->
+        <div class="block-overlay absolute inset-0 bg-black/70 hidden flex-row items-center justify-center gap-4 rounded-[4px] z-20">
+          <button onclick="event.stopPropagation(); deleteBlockBtn('${blockId}')" class="w-11 h-11 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white shadow-xl transition-transform hover:scale-110" title="Sil">
+            <span class="material-symbols-outlined text-[20px]">delete</span>
+          </button>
+          <button onclick="event.stopPropagation(); openEditModal('${blockId}')" class="w-11 h-11 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center text-white shadow-xl transition-transform hover:scale-110" title="Düzelt / Not Ekle">
+            <span class="material-symbols-outlined text-[20px]">edit</span>
+          </button>
+        </div>
+      `;
+    }
+
+    function setBlockStatus(blockId, status) {
+      const el = document.getElementById(blockId);
+      if(!el) return;
+      
+      el.dataset.status = status;
+      
+      if (status === 'fail') {
+        el.classList.add('opacity-60', 'grayscale');
+      } else {
+        el.classList.remove('opacity-60', 'grayscale');
+      }
+      
+      renderBlockInner(el);
+    }
+
+    // --- Action Buttons ---
+    function deleteBlockBtn(blockId) {
+      const el = document.getElementById(blockId);
+      if(el) {
+        el.remove();
+        checkEmptyPool();
+      }
+    }
+
+    // --- Center Modal for Notes & Title ---
+    function openEditModal(blockId) {
+      editingBlockId = blockId;
+      const el = document.getElementById(blockId);
+      
+      // Hide the overlay inside the block since we're opening the modal
+      const overlay = el.querySelector('.block-overlay');
+      if (overlay) {
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+      }
+
+      document.getElementById('editModalColor').className = 'w-6 h-6 rounded-[0.4rem] shadow-sm ' + el.dataset.colorClass;
+      document.getElementById('editModalColorSelect').value = el.dataset.colorClass;
+      document.getElementById('editModalName').value = el.dataset.name;
+      document.getElementById('editModalNotes').value = el.dataset.notes || '';
+
+      const modal = document.getElementById('editModal');
+      const content = document.getElementById('editModalContent');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      
+      setTimeout(() => document.getElementById('editModalNotes').focus(), 50);
+      setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    function closeEditModal() {
+      const modal = document.getElementById('editModal');
+      const content = document.getElementById('editModalContent');
+      content.classList.remove('scale-100', 'opacity-100');
+      content.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+        editingBlockId = null;
+      }, 200);
+    }
+
+    function saveEdit() {
+      if(!editingBlockId) return;
+      const el = document.getElementById(editingBlockId);
+      const name = document.getElementById('editModalName').value.trim();
+      const notes = document.getElementById('editModalNotes').value;
+      
+      if(!name) { alert("Lütfen blok adı girin."); return; }
+
+      const newColorClass = document.getElementById('editModalColorSelect').value;
+      el.classList.remove(el.dataset.colorClass);
+      el.classList.add(newColorClass);
+      
+      el.dataset.colorClass = newColorClass;
+      el.dataset.name = name;
+      el.dataset.notes = notes;
+      renderBlockInner(el);
+      
+      closeEditModal();
+    }
+
+    // --- Horizontal Scroll for Pool ---
+    const bottomPoolEl = document.getElementById('bottom-pool');
+    bottomPoolEl.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        bottomPoolEl.scrollLeft += e.deltaY;
+      }
+    });
+
+    // --- Drag & Drop ---
+    let draggedItem = null;
+    let isFromPool = false;
+
+    function handleDragStart(e) {
+      // If action overlay is active, hide it when drag starts
+      const overlay = this.querySelector('.block-overlay');
+      if(overlay) {
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+      }
+      
+      draggedItem = this;
+      isFromPool = this.parentElement.id === 'bottom-pool';
+      setTimeout(() => this.classList.add('dragging'), 0);
+      e.dataTransfer.effectAllowed = isFromPool ? 'copy' : 'move';
+    }
+
+    function handleDragEnd(e) {
+      this.classList.remove('dragging');
+      draggedItem = null;
+      document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+      checkEmptyPool();
+    }
+
+    function checkEmptyPool() {
+      const pool = document.getElementById('bottom-pool');
+      const emptyState = document.getElementById('empty-state');
+      if(pool.querySelectorAll('.draggable-item').length === 0 && emptyState) {
+        emptyState.style.display = 'block';
+      } else if (emptyState) {
+        emptyState.style.display = 'none';
+      }
+    }
+
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+      zone.addEventListener('dragover', e => {
+        e.preventDefault();
+        zone.classList.add('drag-over');
+      });
+      zone.addEventListener('dragleave', e => {
+        zone.classList.remove('drag-over');
+      });
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        if(draggedItem) {
+          
+          if (zone.id === 'bottom-pool') {
+             // Eğer yukarıdaki (timetable) bir bloğu aşağıya (pool) sürüklüyorsak işlemi iptal et (geri seker).
+             if(!isFromPool) {
+               // zone.appendChild(draggedItem); // İptal edildi: aşağıda yeni sabit oluşmasını engelliyoruz.
+               return; // Hiçbir şey yapma, blok yerine geri dönsün.
+             }
+          } else if (isFromPool && zone.id !== 'bottom-pool') {
+             // CLONE the block because we are dragging from the palette pool!
+             const clone = draggedItem.cloneNode(true);
+             blockCounter++;
+             clone.id = 'block-' + blockCounter;
+             clone.classList.remove('dragging');
+             
+             // The innerHTML of the clone still has the old onclick strings referring to the old ID!
+             // We must re-render the inner HTML with the new ID.
+             renderBlockInner(clone);
+             attachBlockEvents(clone);
+             
+             zone.appendChild(clone);
+          } else {
+             // Move between days
+             zone.appendChild(draggedItem);
+          }
+          checkEmptyPool();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

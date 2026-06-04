@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrowNova - Ayarlar</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "secondary": "#1c1c1e", "on-secondary": "#ffffff", "secondary-container": "#e8e8e8",
+            "on-secondary-container": "#333333", "surface": "#ffffff", "on-surface": "#111111",
+            "on-surface-variant": "#555555", "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f2f2f2", "surface-container": "#ebebeb",
+            "surface-container-high": "#e5e5e5", "surface-variant": "#e0e0e0",
+            "outline": "#999999", "outline-variant": "#dddddd",
+            "error": "#c00000", "error-container": "#fde8e8", "on-error": "#ffffff",
+            "primary-container": "#f4f4f4", "tertiary": "#555555",
+          },
+          fontFamily: {
+            "logo": ["Manrope","sans-serif"], "headline-md": ["Manrope","sans-serif"],
+            "headline-lg": ["Manrope","sans-serif"], "body-md": ["Hanken Grotesk","sans-serif"],
+            "body-lg": ["Hanken Grotesk","sans-serif"], "label-sm": ["Hanken Grotesk","sans-serif"],
+          },
+          fontSize: {
+            "logo": ["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"600"}],
+            "headline-lg": ["32px",{"lineHeight":"40px","fontWeight":"600"}],
+            "headline-md": ["20px",{"lineHeight":"28px","fontWeight":"500"}],
+            "body-lg": ["16px",{"lineHeight":"26px","fontWeight":"400"}],
+            "body-md": ["14px",{"lineHeight":"22px","fontWeight":"400"}],
+            "label-sm": ["12px",{"lineHeight":"16px","letterSpacing":"0.05em","fontWeight":"600"}],
+          },
+          boxShadow: {
+            "level-1": "0 4px 20px 0 rgba(22,28,34,0.04)",
+            "level-2": "0 8px 30px 0 rgba(22,28,34,0.08)",
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .filled { font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .tab-btn.active { background: #d4e8d5; color: #516354; font-weight: 600; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    input[type=text],input[type=email],input[type=password],input[type=tel] {
+      width:100%; padding:10px 14px; border:1px solid #dde3eb; border-radius:10px;
+      font-size:14px; color:#161c22; background:#fff; outline:none; transition:border 0.2s;
+    }
+    input:focus { border-color:#516354; box-shadow:0 0 0 3px rgba(81,99,84,0.12); }
+    label { font-size:12px; font-weight:600; letter-spacing:0.05em; color:#434847; display:block; margin-bottom:6px; }
+    /* --- Blueprint Dotted Background --- */
+    .bg-dots {
+      background-image: radial-gradient(rgba(148, 163, 184, 0.35) 2px, transparent 2px);
+      background-size: 24px 24px;
+    }
+  </style>
+</head>
+<body class="bg-white bg-dots text-on-surface font-body-md min-h-screen flex antialiased">
+
+  <!-- Sidebar -->
+  <aside class="fixed left-0 top-0 h-full w-[260px] bg-[#F8FAFC] shadow-[4px_0_20px_rgba(0,0,0,0.03)] border-r border-[#E2E8F0] z-50 flex flex-col py-8 -translate-x-full md:translate-x-0 transition-transform duration-300" id="sidebar">
+    <div class="flex flex-col h-full">
+      <!-- Brand -->
+      <div class="px-6 mb-8 flex items-center gap-3">
+        <div class="w-9 h-9 bg-[#475569] rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-white text-[20px]">trending_up</span>
+        </div>
+        <div>
+          <h1 class="font-logo text-logo text-[#1E293B] leading-tight" style="font-size:18px">GrowNova</h1>
+          <p class="font-label-sm text-label-sm text-[#64748B]">Planla. Uygula. Başar.</p>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 flex flex-col gap-1 px-2">
+        <a href="dashboard.html" class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9] transition-all">
+          <span class="material-symbols-outlined">dashboard</span><span class="font-body-md text-body-md">Dashboard</span>
+        </a>
+        <a href="mentors.html" class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9] transition-all">
+          <span class="material-symbols-outlined">group</span><span class="font-body-md text-body-md">Mentörler</span>
+        </a>
+        <a href="programs.html" class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent text-[#64748B] hover:text-[#475569] hover:bg-[#F1F5F9] transition-all">
+          <span class="material-symbols-outlined">event_note</span><span class="font-body-md text-body-md">Programlarım</span>
+        </a>
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-[#475569] bg-[#F1F5F9] text-[#475569] font-semibold transition-all" aria-current="page">
+          <span class="material-symbols-outlined filled">settings</span><span class="font-body-md text-body-md">Ayarlar</span>
+        </a>
+      </nav>
+      <!-- Footer -->
+      <div class="mt-auto flex flex-col gap-1 px-2 border-t border-[#E2E8F0] pt-4">
+        <a href="login.html" class="flex items-center gap-3 px-3 py-3 rounded-xl border-l-4 border-transparent text-[#64748B] hover:text-red-500 hover:bg-red-50 transition-all">
+          <span class="material-symbols-outlined">logout</span><span class="font-body-md text-body-md">Çıkış Yap</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 w-full md:pl-[260px] flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center w-full px-4 md:px-8 py-4 md:py-5 sticky top-0 z-30 border-b border-surface-variant/50" style="background:rgba(248,249,248,0.85);backdrop-filter:blur(8px)">
+      <div class="flex items-center gap-3">
+        <button class="md:hidden p-2 rounded-xl hover:bg-surface-container-low transition-colors" onclick="document.getElementById('sidebar').classList.toggle('-translate-x-full')">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="font-logo text-on-surface font-extrabold hidden md:block" style="font-size:22px;letter-spacing:-0.02em">Nova</div>
+      </div>
+      <div class="flex items-center gap-2">
+
+        <button class="relative p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="flex-1 p-4 md:p-8 max-w-[1200px] mx-auto w-full">
+
+      <!-- Page Title -->
+      <div class="mb-8">
+        <h2 class="font-headline-lg text-headline-lg text-on-surface hidden md:block">Ayarlar</h2>
+        <h2 class="font-headline-md text-headline-md text-on-surface md:hidden">Ayarlar</h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Hesap bilgilerini ve tercihlerini yönet.</p>
+      </div>
+
+      <!-- Settings Layout -->
+      <div class="flex flex-col md:flex-row gap-6">
+
+        <!-- Left Tabs -->
+        <aside class="md:w-56 flex-shrink-0">
+          <div class="bg-surface-container-lowest rounded-2xl shadow-level-1 p-2 flex md:flex-col gap-1">
+            <button onclick="switchTab('profil')" id="tab-profil" class="tab-btn active flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all w-full font-body-md text-body-md text-on-surface-variant hover:text-secondary hover:bg-surface-container-low">
+              <span class="material-symbols-outlined text-[20px]">person</span>
+              <span class="hidden md:block">Profil</span>
+            </button>
+            <button onclick="switchTab('guvenlik')" id="tab-guvenlik" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all w-full font-body-md text-body-md text-on-surface-variant hover:text-secondary hover:bg-surface-container-low">
+              <span class="material-symbols-outlined text-[20px]">lock</span>
+              <span class="hidden md:block">Güvenlik</span>
+            </button>
+            <button onclick="switchTab('abonelik')" id="tab-abonelik" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all w-full font-body-md text-body-md text-on-surface-variant hover:text-secondary hover:bg-surface-container-low">
+              <span class="material-symbols-outlined text-[20px]">credit_card</span>
+              <span class="hidden md:block">Abonelik</span>
+            </button>
+          </div>
+        </aside>
+
+        <!-- Right Panel -->
+        <div class="flex-1">
+
+          <!-- PROFIL PANEL -->
+          <div id="panel-profil" class="panel active">
+            <div class="bg-surface-container-lowest rounded-2xl shadow-level-1 p-6 md:p-8">
+              <h3 class="font-headline-md text-headline-md text-on-surface mb-6">Profil Bilgileri</h3>
+
+              <div class="flex flex-col gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label>AD</label>
+                    <input type="text" value="Zeynep">
+                  </div>
+                  <div>
+                    <label>SOYAD</label>
+                    <input type="text" value="Kaya">
+                  </div>
+                </div>
+                <div>
+                  <label>E-POSTA</label>
+                  <!-- Masked email row -->
+                  <div class="flex items-center gap-2">
+                    <div id="email-masked" class="flex-1 px-4 py-2.5 border border-surface-variant rounded-xl bg-surface-container-low text-on-surface-variant font-body-md text-body-md tracking-widest select-none">
+                      ••••••@•••••.com
+                    </div>
+                    <div id="email-revealed" class="flex-1 px-4 py-2.5 border border-surface-variant rounded-xl bg-surface font-body-md text-body-md text-on-surface hidden">
+                      zeynep@email.com
+                    </div>
+                    <button onclick="toggleEmailReveal()" id="email-toggle-btn"
+                      class="flex items-center gap-1.5 px-4 py-2.5 border border-outline-variant text-on-surface-variant font-label-sm text-label-sm rounded-xl hover:bg-surface-container-low transition-all flex-shrink-0">
+                      <span class="material-symbols-outlined text-[18px]">visibility</span>
+                      <span>Göster</span>
+                    </button>
+                  </div>
+                  <!-- Password verify drawer -->
+                  <div id="email-verify-drawer" class="hidden mt-3 p-4 bg-surface-container-low rounded-xl border border-surface-variant">
+                    <p class="font-label-sm text-label-sm text-on-surface-variant mb-3">E-postayı görüntülemek için şifreni doğrula</p>
+                    <div class="flex gap-2">
+                      <input type="password" id="email-verify-input" placeholder="Şifren" style="flex:1;width:auto">
+                      <button onclick="verifyEmail()"
+                        class="flex-shrink-0 px-4 py-2.5 bg-secondary text-on-secondary rounded-xl font-label-sm text-label-sm font-semibold hover:bg-secondary/90 transition-all">
+                        Doğrula
+                      </button>
+                    </div>
+                    <p id="email-verify-error" class="hidden mt-2 font-label-sm text-label-sm" style="color:#ba1a1a">Şifre yanlış, tekrar dene.</p>
+                  </div>
+                </div>
+                <div class="pt-2">
+                  <button class="px-6 py-3 bg-secondary text-on-secondary rounded-xl font-body-md font-semibold hover:bg-secondary/90 active:scale-95 transition-all">
+                    Değişiklikleri Kaydet
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GUVENLIK PANEL -->
+          <div id="panel-guvenlik" class="panel">
+            <div class="flex flex-col gap-5">
+
+              <!-- Şifre -->
+              <div class="bg-surface-container-lowest rounded-2xl shadow-level-1 p-6 md:p-8">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-6">Şifre Değiştir</h3>
+                <div class="flex flex-col gap-4">
+                  <div>
+                    <label>MEVCUT ŞİFRE</label>
+                    <input type="password" placeholder="••••••••">
+                  </div>
+                  <div>
+                    <label>YENİ ŞİFRE</label>
+                    <input type="password" placeholder="••••••••">
+                  </div>
+                  <div>
+                    <label>YENİ ŞİFRE (TEKRAR)</label>
+                    <input type="password" placeholder="••••••••">
+                  </div>
+                  <div class="pt-1">
+                    <button class="px-6 py-3 bg-secondary text-on-secondary rounded-xl font-body-md font-semibold hover:bg-secondary/90 transition-all">
+                      Şifreyi Güncelle
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Telefon -->
+              <div class="bg-surface-container-lowest rounded-2xl shadow-level-1 p-6 md:p-8">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-1">Telefon Numarası</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant mb-5">İki faktörlü doğrulama için kullanılır.</p>
+                <div class="flex gap-3">
+                  <input type="tel" placeholder="+90 5XX XXX XX XX" class="flex-1">
+                  <button class="px-4 py-2.5 border border-secondary text-secondary rounded-xl font-body-md font-semibold hover:bg-secondary/5 transition-all flex-shrink-0">
+                    Doğrula
+                  </button>
+                </div>
+              </div>
+
+              <!-- Mevcut Oturumlar -->
+              <div class="bg-surface-container-lowest rounded-2xl shadow-level-1 p-6 md:p-8">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-5">Mevcut Oturumlar</h3>
+                <div class="flex flex-col gap-2">
+                  <!-- Session 1 (current) -->
+                  <div class="flex items-center justify-between p-4 bg-secondary-container/20 rounded-xl border border-secondary/20">
+                    <div class="flex items-center gap-3">
+                      <span class="material-symbols-outlined text-secondary">computer</span>
+                      <div>
+                        <p class="font-body-md text-body-md text-on-surface font-semibold">MacBook Pro · Chrome</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">İstanbul, TR · Şu an aktif</p>
+                      </div>
+                    </div>
+                    <span class="px-2 py-1 bg-secondary/10 text-secondary font-label-sm text-label-sm rounded-full">Bu cihaz</span>
+                  </div>
+                  <!-- Session 2 -->
+                  <div class="flex items-center justify-between p-4 hover:bg-surface-container-low rounded-xl transition-colors">
+                    <div class="flex items-center gap-3">
+                      <span class="material-symbols-outlined text-on-surface-variant">smartphone</span>
+                      <div>
+                        <p class="font-body-md text-body-md text-on-surface font-semibold">iPhone 15 · Safari</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant">İstanbul, TR · 2 saat önce</p>
+                      </div>
+                    </div>
+                    <button class="text-error font-label-sm text-label-sm hover:underline">Kapat</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tehlikeli Bölge -->
+              <div class="bg-surface-container-lowest rounded-2xl shadow-level-1 p-6 md:p-8 border border-error/10">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-1">Tehlikeli Bölge</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant mb-5">Bu işlemler geri alınamaz.</p>
+                <div class="flex flex-col sm:flex-row gap-3">
+                  <button class="flex items-center justify-center gap-2 px-5 py-3 border border-outline rounded-xl font-body-md text-body-md text-on-surface-variant hover:bg-surface-container-low transition-all">
+                    <span class="material-symbols-outlined text-[18px]">logout</span> Tüm Oturumları Kapat
+                  </button>
+                  <button class="flex items-center justify-center gap-2 px-5 py-3 bg-error-container text-error rounded-xl font-body-md font-semibold hover:bg-error hover:text-on-error transition-all">
+                    <span class="material-symbols-outlined text-[18px]">delete_forever</span> Hesabı Sil
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ABONELIK PANEL -->
+          <div id="panel-abonelik" class="panel">
+            <div class="flex flex-col gap-5">
+
+              <!-- Mevcut Abonelik -->
+              <div class="bg-secondary rounded-2xl shadow-level-2 p-6 md:p-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
+                <div class="relative z-10">
+                  <div class="flex items-start justify-between mb-4">
+                    <div>
+                      <span class="px-3 py-1 bg-on-secondary/15 text-on-secondary font-label-sm text-label-sm rounded-full">Mevcut Plan</span>
+                      <h3 class="font-headline-lg text-on-secondary mt-3" style="font-size:28px">Pro Plan</h3>
+                      <p class="text-on-secondary/80 font-body-md text-body-md mt-1">Aylık ₺149,00 · Sonraki ödeme: 4 Temmuz 2026</p>
+                    </div>
+                    <div class="w-12 h-12 bg-on-secondary/15 rounded-2xl flex items-center justify-center">
+                      <span class="material-symbols-outlined text-on-secondary filled">workspace_premium</span>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2 mt-5">
+                    <span class="flex items-center gap-1.5 px-3 py-1.5 bg-on-secondary/10 text-on-secondary font-label-sm text-label-sm rounded-full">
+                      <span class="material-symbols-outlined text-[14px]">check</span> Sınırsız Plan
+                    </span>
+                    <span class="flex items-center gap-1.5 px-3 py-1.5 bg-on-secondary/10 text-on-secondary font-label-sm text-label-sm rounded-full">
+                      <span class="material-symbols-outlined text-[14px]">check</span> AI Asistan
+                    </span>
+                    <span class="flex items-center gap-1.5 px-3 py-1.5 bg-on-secondary/10 text-on-secondary font-label-sm text-label-sm rounded-full">
+                      <span class="material-symbols-outlined text-[14px]">check</span> Tüm Mentörler
+                    </span>
+                  </div>
+                  <div class="mt-6 flex gap-3">
+                    <button class="px-5 py-2.5 bg-on-secondary text-secondary rounded-xl font-body-md font-semibold hover:bg-on-secondary/90 transition-all">
+                      Planı Yönet
+                    </button>
+                    <button class="px-5 py-2.5 border border-on-secondary/30 text-on-secondary rounded-xl font-body-md hover:bg-on-secondary/10 transition-all">
+                      İptal Et
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Geçmiş Abonelikler -->
+              <div class="bg-surface-container-lowest rounded-2xl shadow-level-1 p-6 md:p-8">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-5">Eski Abonelikler</h3>
+                <div class="flex flex-col gap-1">
+                  <!-- Item 1 -->
+                  <div class="flex items-center justify-between p-4 hover:bg-surface-container-low rounded-xl transition-colors">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-tertiary flex-shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">receipt_long</span>
+                      </div>
+                      <div>
+                        <p class="font-body-md text-body-md text-on-surface font-semibold">Başlangıç Planı</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Ocak 2026 – Nisan 2026 · ₺49/ay</p>
+                      </div>
+                    </div>
+                    <button class="flex items-center gap-1.5 px-3 py-1.5 border border-outline-variant text-on-surface-variant font-label-sm text-label-sm rounded-lg hover:bg-surface-container-low transition-colors">
+                      <span class="material-symbols-outlined text-[16px]">download</span> Fatura
+                    </button>
+                  </div>
+                  <div class="h-px bg-surface-variant mx-4"></div>
+                  <!-- Item 2 -->
+                  <div class="flex items-center justify-between p-4 hover:bg-surface-container-low rounded-xl transition-colors">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-tertiary flex-shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">receipt_long</span>
+                      </div>
+                      <div>
+                        <p class="font-body-md text-body-md text-on-surface font-semibold">Ücretsiz Plan</p>
+                        <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Kasım 2025 – Ocak 2026</p>
+                      </div>
+                    </div>
+                    <span class="px-3 py-1.5 bg-surface-container font-label-sm text-label-sm text-on-surface-variant rounded-lg">Ücretsiz</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById('panel-' + tab).classList.add('active');
+    }
+
+    // E-posta gizle/göster
+    let emailVerified = false;
+
+    function toggleEmailReveal() {
+      if (emailVerified) {
+        // Zaten doğrulandıysa direkt göster/gizle
+        const masked = document.getElementById('email-masked');
+        const revealed = document.getElementById('email-revealed');
+        const btn = document.getElementById('email-toggle-btn');
+        if (revealed.classList.contains('hidden')) {
+          revealed.classList.remove('hidden');
+          masked.classList.add('hidden');
+          btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">visibility_off</span><span>Gizle</span>';
+        } else {
+          revealed.classList.add('hidden');
+          masked.classList.remove('hidden');
+          btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">visibility</span><span>Göster</span>';
+        }
+        return;
+      }
+      // Doğrulanmadıysa drawer'ı aç/kapat
+      const drawer = document.getElementById('email-verify-drawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    function verifyEmail() {
+      const input = document.getElementById('email-verify-input');
+      const error = document.getElementById('email-verify-error');
+      const CORRECT = '123456'; // demo şifre
+      if (input.value === CORRECT) {
+        emailVerified = true;
+        document.getElementById('email-verify-drawer').classList.add('hidden');
+        document.getElementById('email-masked').classList.add('hidden');
+        document.getElementById('email-revealed').classList.remove('hidden');
+        document.getElementById('email-toggle-btn').innerHTML =
+          '<span class="material-symbols-outlined text-[18px]">visibility_off</span><span>Gizle</span>';
+        error.classList.add('hidden');
+      } else {
+        error.classList.remove('hidden');
+        input.classList.add('border-error');
+        setTimeout(() => input.classList.remove('border-error'), 1500);
+      }
+    }
+
+    // Enter ile doğrula
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('email-verify-input')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') verifyEmail();
+      });
+    });
+  </script>
+</body>
+</html>
