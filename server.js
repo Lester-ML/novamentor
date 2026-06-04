@@ -7,10 +7,15 @@ const { Groq } = require('groq-sdk');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Initialize Groq client
-const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY
-});
+// Initialize Groq client without crashing immediately if key is missing
+let groq;
+try {
+    groq = new Groq({
+        apiKey: process.env.GROQ_API_KEY || 'dummy_key_to_prevent_crash'
+    });
+} catch (e) {
+    console.warn("Groq API Key bulunamadı!");
+}
 
 app.use(cors());
 app.use(express.json());
@@ -77,7 +82,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
-// Sunucuyu Başlat
-app.listen(PORT, () => {
-    console.log(`🚀 NovaMentor Backend çalışıyor! http://localhost:${PORT}`);
+// Sunucuyu Başlat (0.0.0.0 host binding eklendi - Railway için kritik)
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 NovaMentor Backend çalışıyor! Port: ${PORT}`);
 });
