@@ -356,7 +356,7 @@
           textarea.disabled = true;
 
           try {
-              const response = await fetch('http://localhost:3000/api/ai-program', {
+              const response = await fetch('/api/ai-program', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ topic: text })
